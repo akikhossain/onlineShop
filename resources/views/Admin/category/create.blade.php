@@ -66,6 +66,8 @@
             event.preventDefault();
             var element = $(this);
 
+            $("button[type=submit]").prop('disbled', true);
+
             $.ajax({
                 url: '{{ route('categories.store') }}',
                 type: 'post',
@@ -73,7 +75,12 @@
                 dataType: 'json',
                 success: function(response) {
 
+            $("button[type=submit]").prop('disbled', false);
+
+
                     if (response['status'] == true) {
+
+                        window.location.href="{{ route('categories.list') }}";
 
                         $("#name").removeClass('is-invalid').siblings('p').removeClass(
                             'invalid-feedback').html("");
@@ -114,12 +121,17 @@
         $("#name").change(function(){
 
             element = $(this);
+
+            $("button[type=submit]").prop('disbled', true);
+
             $.ajax({
                 url: '{{ route('getSlug') }}',
                 type: 'get',
                 data: {title:element.val()},
                 dataType: 'json',
                 success: function(response) {
+            $("button[type=submit]").prop('disbled', false);
+
                     if (response["status" == true]){
                         $("#slug").val(response["slug"]);
                     }
