@@ -68,18 +68,17 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-
                                 @else
                                 <svg class="text-danger h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
                                 </svg>
-
                                 @endif
                             </td>
                             <td>
-                                <a href="#">
+                                <a href="{{ route('categories.edit', $category->id) }}">
                                     <svg class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path
@@ -87,7 +86,8 @@
                                         </path>
                                     </svg>
                                 </a>
-                                <a href="#" class="text-danger w-4 h-4 mr-1">
+                                <a href="#" onclick="deleteCategory({{ $category->id }})"
+                                    class="text-danger w-4 h-4 mr-1">
                                     <svg wire:loading.remove.delay="" wire:target=""
                                         class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -99,7 +99,6 @@
                             </td>
                         </tr>
                         @endforeach
-
                         @else
                         <tr>
                             <td colspan="5">Records Not Found!!!</td>
@@ -123,5 +122,27 @@
 @endsection
 
 @section('customJs')
+<script>
+    function deleteCategory(id) {
+        if (confirm('Are you sure you want to delete this record?')) {
+            var url = '{{ route('categories.delete', ':id') }}';
+            url = url.replace(':id', id);
+
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response['status']) {
+                        window.location.href = "{{ route('categories.list') }}";
+                    }
+                }
+            });
+        }
+    }
+</script>
 
 @endsection
