@@ -77,7 +77,7 @@
             event.preventDefault();
             var element = $(this);
 
-            $("button[type=submit]").prop('disbled', true);
+            $("button[type=submit]").prop('disabled', true);
 
             $.ajax({
                 url: '{{ route('categories.store') }}',
