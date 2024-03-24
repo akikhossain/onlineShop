@@ -8,7 +8,7 @@
                 <h1>Create Sub Category</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="subcategory.html" class="btn btn-primary">Back</a>
+                <a href="{{ route('sub-categories.list') }}" class="btn btn-primary">Back</a>
             </div>
         </div>
     </div>
@@ -98,13 +98,16 @@
 
                     if (response['status'] == true) {
 
-                        // window.location.href = "{{ route('categories.list') }}";
+                        window.location.href = "{{ route('sub-categories.list') }}";
 
-                        // $("#name").removeClass('is-invalid').siblings('p').removeClass(
-                        //     'invalid-feedback').html("");
+                        $("#name").removeClass('is-invalid').siblings('p').removeClass(
+                            'invalid-feedback').html("");
 
-                        // $("#slug").removeClass('is-invalid').siblings('p').removeClass(
-                        //     'invalid-feedback').html("");
+                        $("#slug").removeClass('is-invalid').siblings('p').removeClass(
+                            'invalid-feedback').html("");
+
+                        $("#category").removeClass('is-invalid').siblings('p').removeClass(
+                            'invalid-feedback').html("");
 
                     } else {
 

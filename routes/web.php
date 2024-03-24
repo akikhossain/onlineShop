@@ -48,6 +48,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
 
         // Sub Category
+        Route::get('/sub-categories/list', [SubCategoryController::class, 'index'])->name('sub-categories.list');
         Route::get('/sub-categories/create', [SubCategoryController::class, 'create'])->name('sub-categories.create');
         Route::post('/sub-categories', [SubCategoryController::class, 'store'])->name('sub-categories.store');
 

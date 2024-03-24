@@ -10,6 +10,21 @@ use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class SubCategoryController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $subCategories = SubCategory::select('sub_categories.*', 'categories.name as categoryName')
+            ->latest('sub_categories.id')
+            ->leftJoin('categories', 'categories.id', '=', 'sub_categories.category_id');
+
+        if (!empty($request->get('keyword'))) {
+            $subCategories =  $subCategories->where('sub_categories.name', 'like', '%' . $request->get('keyword') . '%');
+            $subCategories =  $subCategories->orWhere('categories.name', 'like', '%' . $request->get('keyword') . '%');
+        }
+        $subCategories =  $subCategories->paginate(10);
+        // dd($categories);
+        return view('Admin.sub_category.list', compact('subCategories'));
+    }
     public function create()
     {
         $categories = Category::orderBy("name", "asc")->get();
@@ -32,10 +47,10 @@ class SubCategoryController extends Controller
             $subCategory->category_id = $request->category;
             $subCategory->save();
 
-            session()->flash('Success', 'Sub Category Created Successfully');
-            return response([
+            session()->flash('success', ' Sub Category added Successfully');
+            return response()->json([
                 'status' => true,
-                'message' => 'Sub Category Created Successfully'
+                'message' => 'Sub Category added Successfully'
             ]);
         } else {
             return response([
