@@ -80,7 +80,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('categories.edit', $subCategory->id) }}">
+                                <a href="{{ route('sub-categories.edit', $subCategory->id) }}">
                                     <svg class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path
@@ -88,7 +88,7 @@
                                         </path>
                                     </svg>
                                 </a>
-                                <a href="#" onclick="deleteCategory({{ $subCategory->id }})"
+                                <a href="#" onclick="deleteSubCategory({{ $subCategory->id }})"
                                     class="text-danger w-4 h-4 mr-1">
                                     <svg wire:loading.remove.delay="" wire:target=""
                                         class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg"
@@ -124,9 +124,9 @@
 
 @section('customJs')
 <script>
-    function deleteCategory(id) {
+    function deleteSubCategory(id) {
         if (confirm('Are you sure you want to delete this record?')) {
-            var url = '{{ route('categories.delete', ':id') }}';
+            var url = '{{ route('sub-categories.delete', ':id') }}';
             url = url.replace(':id', id);
 
             $.ajax({
@@ -137,9 +137,11 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    if (response['status']) {
-                        window.location.href = "{{ route('categories.list') }}";
-                    }
+                    window.location.href = "{{ route('sub-categories.list') }}";
+
+                    // if (response['status']) {
+                    //     window.location.href = "{{ route('sub-categories.list') }}";
+                    // }
                 }
             });
         }
