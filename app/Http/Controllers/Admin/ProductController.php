@@ -6,11 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
+
 
 class ProductController extends Controller
 {
+
+    public function index()
+    {
+        return view('Admin.products.list');
+    }
     public function create()
     {
         $categories = Category::orderBy('name', 'asc')->get();
@@ -20,6 +29,8 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->image_array);
+
         $rules = [
             'title' => 'required',
             'slug' => 'required | unique:products',
@@ -56,13 +67,49 @@ class ProductController extends Controller
             $product->qty = $request->qty;
             $product->save();
 
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $name = time() . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('/uploads/products');
-                $image->move($destinationPath, $name);
-                $product->image = $name;
-                $product->save();
+            // if ($request->hasFile('image')) {
+            //     $image = $request->file('image');
+            //     $name = time() . '.' . $image->getClientOriginalExtension();
+            //     $destinationPath = public_path('/uploads/products');
+            //     $image->move($destinationPath, $name);
+            //     $product->image = $name;
+            //     $product->save();
+            // }
+
+            // save gallery picture
+
+            if (!empty($request->image_array)) {
+                foreach ($request->image_array as $key => $temp_image_id) {
+
+                    $tempImageInfo = TempImage::find($temp_image_id);
+                    $extArray = explode('.', $tempImageInfo->name);
+                    $ext = last($extArray); // get like jpg, png, gif etc
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $product->id;
+                    $productImage->image = 'NULL';
+                    $productImage->save();
+
+                    $imageName = $product->id . '-' . $productImage->id . '-' . time() . '.' . $ext;
+                    $productImage->image = $imageName;
+                    $productImage->save();
+
+                    // move image to product image folder
+                    // Large Image
+                    $sourcePath = public_path() . '//temp/' . $tempImageInfo->name;
+                    $destPath = public_path() . '/uploads/products/large/' . $tempImageInfo->name;
+                    $image = Image::make($sourcePath);
+                    $image->resize(1400, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    $image->save($destPath);
+
+                    // Small Image
+
+                    $destPath = public_path() . '/uploads/products/small/' . $tempImageInfo->name;
+                    $image = Image::make($sourcePath);
+                    $image->fit(300, 300);
+                    $image->save($destPath);
+                }
             }
 
             session()->flash('success', 'Product added successfully');

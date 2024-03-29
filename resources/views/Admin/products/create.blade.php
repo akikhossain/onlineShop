@@ -62,6 +62,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row" id="product-gallery"></div>
                     <div class="card mb-3">
                         <div class="card-body">
                             <h2 class="h4 mb-3">Pricing</h2>
@@ -223,45 +224,18 @@
 
                     if (response['status'] == true) {
 
-                        // window.location.href = "{{ route('products.list') }}";
+                        $(".error").removeClass('is-invalid').siblings('p').removeClass(
+                            'invalid-feedback').html(
+                            "");
 
-                        // $("#title").removeClass('is-invalid').siblings('p').removeClass(
-                        //     'invalid-feedback').html("");
+                            $("input[type='text'], select, input[type='number']").removeClass('is-invalid');
 
-                        // $("#slug").removeClass('is-invalid').siblings('p').removeClass(
-                        //     'invalid-feedback').html("");
+                        window.location.href = "{{ route('products.list') }}";
 
-                        // $("#category").removeClass('is-invalid').siblings('p').removeClass(
-                        //     'invalid-feedback').html("");
 
                     } else {
 
                         var errors = response['errors'];
-
-                        // if (errors['title']) {
-                        //     $("#title").addClass('is-invalid').siblings('p').addClass(
-                        //             'invalid-feedback')
-                        //         .html(errors['title']);
-                        // } else {
-                        //     $("#title").removeClass('is-invalid').siblings('p').removeClass(
-                        //         'invalid-feedback').html("");
-                        // }
-
-                        // if (errors['slug']) {
-                        //     $("#slug").addClass('is-invalid').siblings('p').addClass('invalid-feedback')
-                        //         .html(errors['slug']);
-                        // } else {
-                        //     $("#slug").removeClass('is-invalid').siblings('p').removeClass(
-                        //         'invalid-feedback').html("");
-                        // }
-                        // if (errors['category']) {
-                        //     $("#category").addClass('is-invalid').siblings('p').addClass(
-                        //             'invalid-feedback')
-                        //         .html(errors['category']);
-                        // } else {
-                        //     $("#category").removeClass('is-invalid').siblings('p').removeClass(
-                        //         'invalid-feedback').html("");
-                        // }
 
                         $(".error").removeClass('is-invalid').siblings('p').removeClass(
                             'invalid-feedback').html(
@@ -331,5 +305,40 @@
                 }
             });
         });
+
+
+        Dropzone.autoDiscover = false;
+        const dropzone = $("#image").dropzone({
+            url: "{{ route('temp-images.create') }}",
+            maxFiles: 10,
+            paramName: 'image',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(file, response) {
+                // $("#image_id").val(response.image_id);
+                //console.log(response)
+                var html = `<div class="col-md-3" id="image-row-${response.image_id}">
+                    <div class="card mr-3 ">
+                    <input type="hidden" name="image_array[]" value="${response.image_id}">
+                    <img src="${response.ImagePath}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <a href="javascript:void(0)" onclick="deleteImage(${response.image_id})" class="btn btn-danger">Delete</a>
+                    </div>
+                </div></div>`;
+
+                $("#product-gallery").append(html);
+            },
+            complete:function(file){
+               this.removeFile(file);
+            }
+        });
+
+        function deleteImage(id){
+            $("#image-row-"+id).remove();
+        }
+
 </script>
 @endsection
