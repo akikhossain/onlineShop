@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\ProductSubCategoryController;
@@ -78,6 +79,9 @@ Route::group(['prefix' => 'admin'], function () {
         // product-sub-category
         Route::get('/product-subCategories', [ProductSubCategoryController::class, 'index'])->name('product-subCategories.list');
 
+        // product image
+        Route::post('/product-images/update', [ProductImageController::class, 'update'])->name('product-images.update');
+        Route::delete('/product-images', [ProductImageController::class, 'destroy'])->name('product-images.delete');
 
 
         // temp-image

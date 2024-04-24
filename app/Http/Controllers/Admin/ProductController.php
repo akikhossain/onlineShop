@@ -100,7 +100,7 @@ class ProductController extends Controller
 
                     // Small Image
 
-                    $destPath = public_path() . '/uploads/products/small/' . $tempImageInfo->name;
+                    $destPath = public_path() . '/uploads/products/small/' . $imageName;
                     $image = Image::make($sourcePath);
                     $image->fit(300, 300);
                     $image->save($destPath);
@@ -127,11 +127,13 @@ class ProductController extends Controller
             session()->flash('error', 'Product not found');
             return redirect()->route('products.list');
         }
+
+        $productImages = ProductImage::where('product_id', $product->id)->get();
         $categories = Category::orderBy('name', 'asc')->get();
         $subCategories = SubCategory::where('category_id', $product->category_id)->get();
         // dd($subCategories);
         $brands = Brand::orderBy('name', 'asc')->get();
-        return view('Admin.products.edit', compact('product', 'categories', 'brands', 'subCategories'));
+        return view('Admin.products.edit', compact('product', 'categories', 'brands', 'subCategories', 'productImages'));
     }
 
     public function update($id, Request $request)
