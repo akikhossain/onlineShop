@@ -157,11 +157,14 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    window.location.href = "{{ route('products.list') }}";
+                    // window.location.href = "{{ route('products.list') }}";
 
-                    // if (response['status']) {
-                    //     window.location.href = "{{ route('sub-categories.list') }}";
-                    // }
+                    if (response['status'] == true) {
+                        window.location.href = "{{ route('products.list') }}";
+                    }
+                    else{
+                        window.location.href = "{{ route('products.list') }}";
+                    }
                 }
             });
         }
