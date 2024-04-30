@@ -70,6 +70,8 @@ class ProductController extends Controller
             $product->is_featured = $request->is_featured;
             $product->description = $request->description;
             $product->qty = $request->qty;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shipping_returns;
             $product->save();
 
             // save gallery picture
@@ -170,6 +172,8 @@ class ProductController extends Controller
             $product->is_featured = $request->is_featured;
             $product->description = $request->description;
             $product->qty = $request->qty;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shipping_returns;
             $product->save();
 
             session()->flash('success', 'Product Updated successfully');

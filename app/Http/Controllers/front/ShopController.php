@@ -76,4 +76,17 @@ class ShopController extends Controller
         $products = $products->paginate(12);
         return view('Front.shop', compact('categories', 'brands', 'products', 'categorySelected', 'subCategorySelected', 'brandsArray', 'priceMax', 'priceMin', 'sort'));
     }
+
+    public function product($slug)
+    {
+        $product = Product::where('slug', $slug)->with('product_images')->first();
+        // dd($product);
+        if ($product == null) {
+            // return view('Front.product', compact('product'));
+            abort(404);
+        } else {
+            // return redirect()->route('shop');
+            return view('Front.product', compact('product'));
+        }
+    }
 }
