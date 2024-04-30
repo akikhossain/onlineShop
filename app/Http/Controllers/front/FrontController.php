@@ -16,7 +16,7 @@ class FrontController extends Controller
             ->get();
         $latestProducts = Product::orderBy('id', 'DESC')
             ->where('status', 1)
-            ->take(4)
+            ->take(8)
             ->get();
         return view('Front.home', compact('products', 'latestProducts'));
     }

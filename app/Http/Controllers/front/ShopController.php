@@ -73,7 +73,7 @@ class ShopController extends Controller
         } else {
             $products = $products->orderBy('id', 'DESC');
         }
-        $products = $products->get();
+        $products = $products->paginate(12);
         return view('Front.shop', compact('categories', 'brands', 'products', 'categorySelected', 'subCategorySelected', 'brandsArray', 'priceMax', 'priceMin', 'sort'));
     }
 }

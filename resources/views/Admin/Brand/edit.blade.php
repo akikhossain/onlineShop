@@ -43,13 +43,9 @@
                                 <label for="status">Status</label>
                                 <select name="status" id="status" class="form-control">
                                     <option {{ ($brand->status == 1) ? 'selected' : '' }}
-                                        value="{{
-                                        $brand->id
-                                        }}" value="1">Active</option>
+                                        value="1">Active</option>
                                     <option {{ ($brand->status == 0) ? 'selected' : '' }}
-                                        value="{{
-                                        $brand->id
-                                        }}" value="0">Block</option>
+                                        value="0">Block</option>
                                 </select>
                             </div>
                         </div>
