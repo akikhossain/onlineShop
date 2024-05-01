@@ -107,10 +107,11 @@
                                     </div>
                                 </div> --}}
                                 <select name="sort" id="sort" class="form-control">
-                                    <option value="latest" {{ ($sort=='latest' ) ? 'selected' : '' }}>Latest</option>
-                                    <option value="price_asc" {{ ($sort=='price_asc' ) ? 'selected' : '' }}>Price Low
+                                    <option value="latest" {{ $sort=='latest' ? 'selected' : '' }}>Latest</option>
+                                    <option value="price_asc" {{ $sort=='price_asc' ? 'selected' : '' }}>Price Low
                                     </option>
-                                    <option value="price_desc" {{ ($sort=='price_desc' ) ? 'selected' : '' }}>Price High
+                                    <option value="price_desc" {{ $sort=='price_desc' ? 'selected' : '' }}>Price
+                                        High
                                     </option>
                                 </select>
                             </div>
@@ -125,22 +126,15 @@
                     <div class="col-md-4">
                         <div class="card product-card">
                             <div class="product-image position-relative">
-                                <a href="" class="product-img">
-                                    @if ($product->product_images->isNotEmpty())
-                                    @foreach ($product->product_images as $productImage)
-                                    @if (!empty($productImage->image))
+                                <a href="{{ route('front.product', $product->slug) }}" class="product-img">
+                                    @if (!empty($productImage))
                                     <img class="card-img-top" style="height: 300px;"
                                         src="{{ asset('uploads/products/large/' . $productImage->image) }}">
                                     @else
                                     <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}">
                                     @endif
-                                    @endforeach
-                                    @else
-                                    <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}">
-                                    @endif
                                 </a>
-                                <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
-
+                                <a class="whishlist" href="#"><i class="far fa-heart"></i></a>
                                 <div class="product-action">
                                     <a class="btn btn-dark" href="#">
                                         <i class="fa fa-shopping-cart"></i> Add To Cart
@@ -148,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="card-body text-center mt-3">
-                                <a class="h6 link" href="product.php">{{ $product->title }}</a>
+                                <a class="h6 link" href="#">{{ $product->title }}</a>
                                 <div class="price mt-2">
                                     <span class="h5"><strong>${{ $product->price }}</strong></span>
                                     @if ($product->compare_price > 0)
@@ -213,15 +207,15 @@
             var url = '{{ url()->current() }}?';
 
             // Brand Filter
-            if(brands.length > 0){
-                url += '&brand='+brands.toString();
+            if (brands.length > 0) {
+                url += '&brand=' + brands.toString();
             }
 
             // Price Range Filter
-            url += '&price_min='+slider.result.from+'&price_max='+slider.result.to;
+            url += '&price_min=' + slider.result.from + '&price_max=' + slider.result.to;
 
             // Sort Filter
-            url += '&sort='+$('#sort').val();
+            url += '&sort=' + $('#sort').val();
             window.location.href = url;
         }
 </script>

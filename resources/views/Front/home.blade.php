@@ -138,31 +138,18 @@
         <div class="row pb-3">
             @if ($products->isNotEmpty())
             @foreach ($products as $product)
-            @php
-            $productImage = $product->product_images->first();
-            @endphp
             <div class="col-md-3">
                 <div class="card product-card">
                     <div class="product-image position-relative">
                         <a href="{{ route('front.product', $product->slug) }}" class="product-img">
-                            {{-- <img class="card-img-top" src="{{ asset('front-assets/images/product-1.jpg') }}"
-                                alt=""> --}}
-
                             @if ($product->product_images->isNotEmpty())
-                            @foreach ($product->product_images as $productImage)
-                            @if (!empty($productImage->image))
                             <img class="card-img-top" style="height: 300px;"
-                                src="{{ asset('uploads/products/large/'.$productImage->image) }}">
-                            @else
-                            <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}">
-                            @endif
-                            @endforeach
+                                src="{{ asset('uploads/products/large/'.$product->product_images->first()->image) }}">
                             @else
                             <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}">
                             @endif
                         </a>
                         <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
-
                         <div class="product-action">
                             <a class="btn btn-dark" href="#">
                                 <i class="fa fa-shopping-cart"></i> Add To Cart
@@ -184,6 +171,7 @@
             @endif
         </div>
     </div>
+
 </section>
 
 <section class="section-4 pt-5">

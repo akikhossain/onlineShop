@@ -166,7 +166,7 @@
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 class="h4 mb-3">Product status</h2>
+                            <h2 class="h4 mb-3">Product Status</h2>
                             <div class="mb-3">
                                 <select name="status" id="status" class="form-control">
                                     <option {{ $product->status == 1 ? 'selected' : '' }} value="1">Active
@@ -179,7 +179,7 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="h4  mb-3">Product category</h2>
+                            <h2 class="h4  mb-3">Product Category</h2>
                             <div class="mb-3">
                                 <label for="category">Category</label>
                                 <select name="category" id="category" class="form-control">
@@ -194,7 +194,7 @@
                                 <p class="error"></p>
                             </div>
                             <div class="mb-3">
-                                <label for="sub_category">Sub category</label>
+                                <label for="sub_category">Sub Category</label>
                                 <select name="sub_category" id="sub_category" class="form-control">
                                     <option value="">Select a Sub Category</option>
                                     @if ($subCategories->isNotEmpty())
@@ -209,7 +209,7 @@
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 class="h4 mb-3">Product brand</h2>
+                            <h2 class="h4 mb-3">Product Brand</h2>
                             <div class="mb-3">
                                 <select name="brand" id="brand" class="form-control">
                                     <option value="">Select a Brand</option>
@@ -225,7 +225,7 @@
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 class="h4 mb-3">Featured product</h2>
+                            <h2 class="h4 mb-3">Featured Product</h2>
                             <div class="mb-3">
                                 <select name="is_featured" id="is_featured" class="form-control">
                                     <option {{ $product->is_featured == 'No' ? 'selected' : '' }} value="No">No
@@ -233,6 +233,23 @@
                                     <option {{ $product->is_featured == 'Yes' ? 'selected' : '' }} value="Yes">
                                         Yes
                                     </option>
+                                </select>
+                                <p class="error"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h2 class="h4 mb-3">Related Products</h2>
+                            <div class="mb-3">
+                                <select multiple class="related-products w-100" name="related_products[]"
+                                    id="related_products">
+                                    @if ($relatedProducts->isNotEmpty())
+                                    @foreach ($relatedProducts as $relatedProduct)
+                                    <option selected value="{{ $relatedProduct->id }}">{{ $relatedProduct->title }}
+                                    </option>
+                                    @endforeach
+                                    @endif
                                 </select>
                                 <p class="error"></p>
                             </div>
@@ -254,6 +271,22 @@
 
 @section('customJs')
 <script>
+    $('.related-products').select2({
+    ajax: {
+        url: '{{ route("products.getProducts") }}',
+        dataType: 'json',
+        tags: true,
+        multiple: true,
+        minimumInputLength: 3,
+        processResults: function (data) {
+            return {
+                results: data.tags
+            };
+        }
+    }
+});
+
+
     $("#productForm").submit(function(event) {
             event.preventDefault();
             var element = $(this);

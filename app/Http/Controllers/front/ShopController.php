@@ -82,11 +82,15 @@ class ShopController extends Controller
         $product = Product::where('slug', $slug)->with('product_images')->first();
         // dd($product);
         if ($product == null) {
-            // return view('Front.product', compact('product'));
             abort(404);
-        } else {
-            // return redirect()->route('shop');
-            return view('Front.product', compact('product'));
         }
+
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productArray = explode(',', $product->related_products);
+            $relatedProducts = Product::whereIn('id', $productArray)->get();
+        }
+        // return redirect()->route('shop');
+        return view('Front.product', compact('product', 'relatedProducts'));
     }
 }

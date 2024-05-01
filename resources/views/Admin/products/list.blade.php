@@ -65,16 +65,9 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>
-                                @if ($product->product_images->isNotEmpty())
-                                @foreach ($product->product_images as $productImage)
-                                @if (!empty($productImage->image))
+                                @if (!empty($productImage) && !empty($productImage->image))
                                 <img src="{{ asset('uploads/products/large/'.$productImage->image) }}"
                                     class="img-thumbnail" width="50">
-                                @else
-                                <img src="{{ asset('admin-assets/img/default-150x150.png') }}" class="img-thumbnail"
-                                    width="50">
-                                @endif
-                                @endforeach
                                 @else
                                 <img src="{{ asset('admin-assets/img/default-150x150.png') }}" class="img-thumbnail"
                                     width="50">
