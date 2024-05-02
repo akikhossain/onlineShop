@@ -244,7 +244,7 @@
                             <div class="mb-3">
                                 <select multiple class="related-products w-100" name="related_products[]"
                                     id="related_products">
-                                    @if ($relatedProducts->isNotEmpty())
+                                    @if (!empty($relatedProducts))
                                     @foreach ($relatedProducts as $relatedProduct)
                                     <option selected value="{{ $relatedProduct->id }}">{{ $relatedProduct->title }}
                                     </option>

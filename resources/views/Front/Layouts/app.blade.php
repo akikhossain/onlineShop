@@ -34,6 +34,8 @@
     <meta name="twitter:card" content="summary_large_image" />
 
 
+
+
     <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/slick.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/ion.rangeSlider.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/slick-theme.css') }}" />
@@ -48,6 +50,7 @@
 
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body data-instant-intensity="mousedown">
@@ -95,18 +98,18 @@
 
                         @if (getCategories()->isNotEmpty())
                         @foreach (getCategories() as $category)
-
                         <li class="nav-item dropdown">
                             <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                {{$category->name}}
+                                {{ $category->name }}
                             </button>
                             @if ($category->sub_category->isNotEmpty())
                             @foreach ($category->sub_category as $subCategory)
                             <ul class="dropdown-menu dropdown-menu-dark">
                                 <li><a class="dropdown-item nav-link"
-                                        href="{{ route('front.shop', [$category->slug,$subCategory->slug]) }}">{{
-                                        $subCategory->name }}</a></li>
+                                        href="{{ route('front.shop', [$category->slug, $subCategory->slug]) }}">{{
+                                        $subCategory->name }}</a>
+                                </li>
                             </ul>
                             @endforeach
                             @endif
@@ -117,7 +120,7 @@
                     </ul>
                 </div>
                 <div class="right-nav py-0">
-                    <a href="cart.php" class="ml-3 d-flex pt-2">
+                    <a href="{{ route('front.cart') }}" class="ml-3 d-flex pt-2">
                         <i class="fas fa-shopping-cart text-primary"></i>
                     </a>
                 </div>
@@ -186,38 +189,47 @@
     <script src="{{ asset('front-assets/js/slick.min.js') }}"></script>
     <script src="{{ asset('front-assets/js/custom.js') }}"></script>
     <script>
-        window.onscroll = function() {myFunction()};
-
-    var navbar = document.getElementById("navbar");
-    var sticky = navbar.offsetTop;
-
-    function myFunction() {
-      if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
-      } else {
-        navbar.classList.remove("sticky");
-      }
-    }
-
-    function addToCart(id) {
-        // alert(id);
-        $.ajax({
-            url: "{{ route('front.addToCart') }}",
-            type: "POST",
-            data: {
-                id: id,
-                _token: "{{ csrf_token() }}"
-            },
-            dataType: "json",
-            success: function(response) {
-                if(response.status == true){
-                    window.location.href = "{{ route('front.cart') }}";
-                } else {
-                    alert(response.message);
-                }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    }
+
+
+        window.onscroll = function() {
+            myFunction()
+        };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        function addToCart(id) {
+            // alert(id);
+            $.ajax({
+                url: "{{ route('front.addToCart') }}",
+                type: "POST",
+                data: {
+                    id: id,
+                    _token: "{{ csrf_token() }}"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.status == true) {
+                        window.location.href = "{{ route('front.cart') }}";
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
     </script>
 
     @yield('customJs')
