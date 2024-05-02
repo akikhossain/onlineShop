@@ -4,7 +4,7 @@
     <div class="container">
         <div class="light-font">
             <ol class="breadcrumb primary-color mb-0">
-                <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">Home</a></li>
                 <li class="breadcrumb-item active">Shop</li>
             </ol>
         </div>
@@ -136,7 +136,8 @@
                                 </a>
                                 <a class="whishlist" href="#"><i class="far fa-heart"></i></a>
                                 <div class="product-action">
-                                    <a class="btn btn-dark" href="#">
+                                    <a class="btn btn-dark" href="javascript:void(0);"
+                                        onclick="addToCart({{ $product->id }});">
                                         <i class="fa fa-shopping-cart"></i> Add To Cart
                                     </a>
                                 </div>

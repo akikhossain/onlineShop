@@ -25,6 +25,8 @@
                             <img class="card-img-top" style="height: 500px;"
                                 src="{{ asset('uploads/products/large/' . $productImage->image) }}">
                         </div>
+                        @else
+                        <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}">
                         @endif
                         @endforeach
                         @endif
@@ -57,7 +59,10 @@
                     @endif
 
                     {!! $product->short_description !!}
-                    <a href="cart.php" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+                    <a href="javascript:void(0);" onclick="addToCart({{ $product->id }});" class="btn btn-dark"><i
+                            class="fas fa-shopping-cart"></i>
+                        &nbsp;ADD TO
+                        CART</a>
                 </div>
             </div>
 
@@ -111,7 +116,7 @@
                 @endphp
                 <div class="card product-card">
                     <div class="product-image position-relative">
-                        <a href="" class="product-img">
+                        <a href="{{ route('front.product', $recordProduct->slug) }}" class="product-img">
                             @if (!empty($productImage))
                             <img class="card-img-top" style="height: 300px;"
                                 src="{{ asset('uploads/products/large/' . $productImage->image) }}">
@@ -122,7 +127,7 @@
                         <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                         <div class="product-action">
-                            <a class="btn btn-dark" href="#">
+                            <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{ $product->id }});">
                                 <i class="fa fa-shopping-cart"></i> Add To Cart
                             </a>
                         </div>
@@ -144,4 +149,7 @@
     </div>
 </section>
 @endif
+@endsection
+@section('customJs')
+
 @endsection
