@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -109,5 +111,26 @@ class CartController extends Controller
             'status' => true,
             'message' => $message
         ]);
+    }
+
+    public function checkOut()
+    {
+
+        // if cart item is empty
+        if (Cart::count() == 0) {
+            return redirect()->route('front.cart');
+        }
+        // if user is not logged in
+        if (Auth::check() == false) {
+            if (!session()->has('url.intended')) {
+                session(['url.intended' => url()->current()]);
+            }
+            return redirect()->route('account.login');
+        }
+
+        session()->forget('url.intended');
+
+        $countries = Country::orderBy('name', 'ASC')->get();
+        return view('Front.checkout', compact('countries'));
     }
 }
