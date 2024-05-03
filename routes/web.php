@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\front\AuthController;
 use App\Http\Controllers\front\CartController;
 use App\Http\Controllers\front\FrontController;
 use App\Http\Controllers\front\ShopController;
@@ -40,6 +41,16 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('front.a
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('front.updateCart');
 Route::post('/delete-item', [CartController::class, 'deleteItem'])->name('front.deleteItem');
 
+// Account
+Route::group(['prefix' => 'account'], function () {
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('/login', [AuthController::class, 'login'])->name('account.login');
+        Route::get('/register', [AuthController::class, 'register'])->name('account.register');
+        Route::post('/process-register', [AuthController::class, 'processRegister'])->name('account.processRegister');
+    });
+    Route::group(['middleware' => 'auth'], function () {
+    });
+});
 
 
 // Route::get('admin/login', [AdminLoginController::class, 'adminLogin'])->name('admin.login');
