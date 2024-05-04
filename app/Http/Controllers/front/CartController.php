@@ -4,10 +4,14 @@ namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\CustomerAdress;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -130,7 +134,109 @@ class CartController extends Controller
 
         session()->forget('url.intended');
 
+
+        $customerAddress = CustomerAdress::where('user_id', Auth::user()->id)->first();
+
         $countries = Country::orderBy('name', 'ASC')->get();
-        return view('Front.checkout', compact('countries'));
+        return view('Front.checkout', compact('countries', 'customerAddress'));
+    }
+
+    public function processCheckout(Request $request)
+    {
+        $validator = Validator::make(request()->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'country' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'mobile' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $user = Auth::user();
+        CustomerAdress::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'user_id' => $user->id,
+                'first_name' => request()->first_name,
+                'last_name' => request()->last_name,
+                'email' => request()->email,
+                'country_id' => request()->country,
+                'address' => request()->address,
+                'city' => request()->city,
+                'state' => request()->state,
+                'zip' => request()->zip,
+                'mobile' => request()->mobile,
+                'apartment' => request()->apartment,
+            ]
+        );
+
+
+        // step 3: store data in order table
+        if ($request->payment_method == 'cod') {
+            $shipping = 0;
+            $discount = 0;
+            $subTotal = Cart::subtotal(2, '.', '');
+            $grandTotal = $subTotal + $shipping;
+
+
+
+            $order = new Order();
+            $order->subtotal = $subTotal;
+            $order->shipping = $shipping;
+            $order->grand_total = $grandTotal;
+            $order->user_id = $user->id;
+
+
+
+            $order->first_name = request()->first_name;
+            $order->last_name = request()->last_name;
+            $order->email = request()->email;
+            $order->country_id = request()->country;
+            $order->address = request()->address;
+            $order->city = request()->city;
+            $order->state = request()->state;
+            $order->zip = request()->zip;
+            $order->mobile = request()->mobile;
+            $order->notes = request()->order_notes;
+            $order->apartment = request()->apartment;
+            $order->save();
+
+
+            // step 4: store data in order item table
+            foreach (Cart::content() as $item) {
+                $orderItem = new OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->product_id = $item->id;
+                $orderItem->name = $item->name;
+                $orderItem->qty = $item->qty;
+                $orderItem->price = $item->price;
+                $orderItem->total = $item->price * $item->qty;
+                $orderItem->save();
+            }
+
+            session()->flash('success', 'Order placed successfully');
+            Cart::destroy();
+            return response()->json([
+                'status' => true,
+                'orderId' => $order->id,
+                'message' => 'Order placed successfully'
+            ]);
+        }
+    }
+
+    public function thankyou($id)
+    {
+        return view('Front.thankyou', compact('id'));
     }
 }
