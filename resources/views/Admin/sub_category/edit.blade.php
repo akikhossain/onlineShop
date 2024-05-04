@@ -62,13 +62,9 @@
                                 <label for="status">Status</label>
                                 <select name="status" id="status" class="form-control">
                                     <option {{ ($subCategory->status == 1) ? 'selected' : '' }}
-                                        value="{{
-                                        $category->id
-                                        }}" value="1">Active</option>
+                                        value="1">Active</option>
                                     <option {{ ($subCategory->status == 0) ? 'selected' : '' }}
-                                        value="{{
-                                        $category->id
-                                        }}" value="0">Block</option>
+                                        value="0">Block</option>
                                 </select>
                                 <p></p>
                             </div>

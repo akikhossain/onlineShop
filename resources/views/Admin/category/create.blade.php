@@ -95,9 +95,7 @@
                 dataType: 'json',
                 success: function(response) {
 
-                    $("button[type=submit]").prop('disbled', false);
-
-
+                    $("button[type=submit]").prop('disabled', false);
                     if (response['status'] == true) {
 
                         window.location.href = "{{ route('categories.list') }}";
