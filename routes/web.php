@@ -133,8 +133,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/coupon/create', [DiscountCodeController::class, 'create'])->name('coupon.create');
         Route::post('/coupon', [DiscountCodeController::class, 'store'])->name('coupon.store');
         Route::get('/coupon/{id}', [DiscountCodeController::class, 'edit'])->name('coupon.edit');
-        // Route::post('/coupon/{discountCode}', [DiscountCodeController::class, 'update'])->name('coupon.update');
-        // Route::delete('/coupon/{discountCode}', [DiscountCodeController::class, 'destroy'])->name('coupon.delete');
+        Route::put('/coupon/{id}', [DiscountCodeController::class, 'update'])->name('coupon.update');
+        Route::delete('/coupon/{id}', [DiscountCodeController::class, 'destroy'])->name('coupon.delete');
 
 
         // temp-image

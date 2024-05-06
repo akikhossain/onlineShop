@@ -142,7 +142,7 @@
 <script>
     function deleteCoupon(id) {
         if (confirm('Are you sure you want to delete this record?')) {
-            var url = '{{ route('categories.delete', ':id') }}';
+            var url = '{{ route('coupon.delete', ':id') }}';
             url = url.replace(':id', id);
 
             $.ajax({
@@ -154,7 +154,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response['status']) {
-                        window.location.href = "{{ route('categories.list') }}";
+                        window.location.href = "{{ route('coupon.list') }}";
                     }
                 }
             });
