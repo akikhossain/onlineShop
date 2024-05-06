@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class DiscountCodeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('Admin.coupon.list');
+        $discountCoupons = DiscountCoupon::latest();
+        if (!empty($request->get('keyword'))) {
+            $discountCoupons = $discountCoupons->where('name', 'like', '%' . $request->get('keyword') . '%');
+        }
+        $discountCoupons = $discountCoupons->paginate(10);
+        return view('Admin.coupon.list', compact('discountCoupons'));
     }
 
     public function create()
@@ -42,7 +47,6 @@ class DiscountCodeController extends Controller
                 }
             }
 
-            // end date must be greater than start date
             // end date must be greater than start date
             if (!empty($request->starts_at) && !empty($request->expires_at)) {
                 $expiresAt = Carbon::createFromFormat('Y-m-d H:i:s', $request->expires_at);

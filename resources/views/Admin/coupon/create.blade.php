@@ -8,7 +8,7 @@
                 <h1>Create Coupon Code</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('categories.list') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('coupon.list') }}" class="btn btn-primary">Back</a>
             </div>
         </div>
     </div>
@@ -90,16 +90,16 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="starts_at">Starts At</label>
-                                <input type="text" name="starts_at" id="starts_at" class="form-control"
-                                    placeholder="Starts At"></input>
+                                <input autocomplete="off" type="text" name="starts_at" id="starts_at"
+                                    class="form-control" placeholder="Starts At"></input>
                                 <p></p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="expires_at">Expires At</label>
-                                <input type="text" name="expires_at" id="expires_at" class="form-control"
-                                    placeholder="Expires At"></input>
+                                <input autocomplete="off" type="text" name="expires_at" id="expires_at"
+                                    class="form-control" placeholder="Expires At"></input>
                                 <p></p>
                             </div>
                         </div>
