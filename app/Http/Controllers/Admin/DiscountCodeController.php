@@ -115,17 +115,6 @@ class DiscountCodeController extends Controller
         ]);
 
         if ($validator->passes()) {
-            // start date must be greater than current date
-            // if (!empty($request->starts_at)) {
-            //     $now = Carbon::now();
-            //     $startAt = Carbon::createFromFormat('Y-m-d H:i:s', $request->starts_at);
-            //     if ($startAt->lte($now) == true) {
-            //         return response()->json([
-            //             'status' => false,
-            //             'message' => ['starts_at' => 'Start date must be greater than current date']
-            //         ]);
-            //     }
-            // }
 
             // end date must be greater than start date
             if (!empty($request->starts_at) && !empty($request->expires_at)) {

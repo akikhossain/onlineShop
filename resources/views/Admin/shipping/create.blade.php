@@ -19,7 +19,7 @@
     <!-- Default box -->
     <div class="container-fluid">
         @include('Admin.message')
-        <form action="#" method="post" id="shippingForm" name="shippingForm">
+        <form action="" method="post" id="shippingForm" name="shippingForm">
             @csrf
             <div class="card">
                 <div class="card-body">
@@ -99,7 +99,7 @@
             $.ajax({
                 url: '{{ route('shipping.store') }}',
                 type: 'post',
-                data: element.serializeArray(),
+                data: $(this).serializeArray(),
                 dataType: 'json',
                 success: function(response) {
                     $("button[type=submit]").prop('disabled', false);
