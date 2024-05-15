@@ -223,7 +223,7 @@ class CartController extends Controller
         // step 3: store data in order table
         if ($request->payment_method == 'cod') {
 
-            $discountCode = '';
+            $discountCode = null;
             $promoCode = '';
             $shipping = 0;
             $discount = 0;
@@ -260,6 +260,8 @@ class CartController extends Controller
             $order->shipping = $shipping;
             $order->grand_total = $grandTotal;
             $order->discount = $discount;
+            $order->payment_status = 'not paid';
+            $order->status = 'pending';
             $order->coupon_code_id = $discountCode;
             $order->coupon_code = $promoCode;
             $order->user_id = $user->id;

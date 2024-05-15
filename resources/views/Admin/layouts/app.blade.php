@@ -124,7 +124,6 @@
             });
         });
     </script>
-
     @yield('customJs')
 </body>
 

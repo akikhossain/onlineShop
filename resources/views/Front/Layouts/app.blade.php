@@ -65,7 +65,17 @@
                     </a>
                 </div>
                 <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
-                    <a href="{{ route('account.login') }}" class="nav-link text-dark">My Account</a>
+                    @if (Auth::check())
+                    <a href="{{ route('account.profile') }}" class="text-decoration-none me-3">
+                        <i class="fas fa-user text-primary"></i>
+                        <span class="text-dark">My Account</span>
+                    </a>
+                    @else
+                    <a href="{{ route('account.login') }}" class="text-decoration-none me-3">
+                        <i class="fas fa-user text-primary"></i>
+                        <span class="text-dark">Login/Register</span>
+                    </a>
+                    @endif
                     <form action="">
                         <div class="input-group">
                             <input type="text" placeholder="Search For Products" class="form-control"

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\ProductImage;
 
 function getCategories()
 {
@@ -10,4 +11,9 @@ function getCategories()
         ->where('showHome', 'Yes')
         ->where('status', 1)
         ->get();
+}
+
+function getProductImage($productId)
+{
+    return ProductImage::where('product_id', $productId)->first();
 }

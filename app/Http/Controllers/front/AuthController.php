@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,5 +95,20 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('account.login')
             ->with('success', 'You have been logged out');
+    }
+
+    public function orders()
+    {
+        $user = Auth::user();
+        $orders = Order::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        return view('Front.account.orders', compact('orders'));
+    }
+
+    public function orderDetail($id)
+    {
+        $user = Auth::user();
+        $order = Order::where('user_id', $user->id)->where('id', $id)->first();
+        $orderItems = OrderItem::where('order_id', $order->id)->get();
+        return view('Front.account.orderDetail', compact('order', 'orderItems'));
     }
 }
