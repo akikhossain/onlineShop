@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\admin\HomeController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\Admin\ShippingController;
@@ -139,6 +140,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/coupon/{id}', [DiscountCodeController::class, 'edit'])->name('coupon.edit');
         Route::put('/coupon/{id}', [DiscountCodeController::class, 'update'])->name('coupon.update');
         Route::delete('/coupon/{id}', [DiscountCodeController::class, 'destroy'])->name('coupon.delete');
+
+
+        // Order Routes
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.list');
+        Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
 
 
         // temp-image

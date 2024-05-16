@@ -65,17 +65,6 @@
                                         <td colspan="4" class="text-center">No Orders Found</td>
                                     </tr>
                                     @endif
-                                    {{-- <tr>
-                                        <td>
-                                            <a href="order-detail.php">OR756374</a>
-                                        </td>
-                                        <td>11 Nav, 2022</td>
-                                        <td>
-                                            <span class="badge bg-success">Delivered</span>
-
-                                        </td>
-                                        <td>$400</td>
-                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>
