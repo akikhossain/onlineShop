@@ -70,6 +70,8 @@
                                 <span class="badge bg-primary">{{ $order->status }}</span>
                                 @elseif ($order->status == 'delivered')
                                 <span class="badge bg-success">{{ $order->status }}</span>
+                                @else
+                                <span class="badge bg-warning text-white">Cancelled</span>
                                 @endif
                             </td>
                             <td>${{ number_format($order->grand_total,2) }}</td>

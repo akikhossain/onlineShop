@@ -40,4 +40,18 @@ class OrderController extends Controller
         $orderItems = OrderItem::where('order_id', $orderId)->get();
         return view('Admin.order.detail', compact('order', 'orderItems'));
     }
+
+    public function changeStatusForm(Request $request, $orderId)
+    {
+        $order = Order::find($orderId);
+        $order->status = $request->status;
+        $order->shipped_date = $request->shipped_date;
+        $order->save();
+
+        session()->flash('success', 'Order status updated successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Order status updated successfully'
+        ]);
+    }
 }

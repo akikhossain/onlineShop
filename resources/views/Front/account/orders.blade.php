@@ -52,9 +52,11 @@
                                             @if ($order->status == 'pending')
                                             <span class="badge bg-danger text-white">{{ $order->status }}</span>
                                             @elseif ($order->status == 'shipped')
-                                            <span class="badge bg-primary">{{ $order->status }}</span>
+                                            <span class="badge bg-info text-white">{{ $order->status }}</span>
                                             @elseif ($order->status == 'delivered')
                                             <span class="badge bg-success">{{ $order->status }}</span>
+                                            @else
+                                            <span class="badge bg-warning text-white">Cancelled</span>
                                             @endif
                                         </td>
                                         <td>${{ number_format($order->grand_total,2) }}</td>
