@@ -34,6 +34,9 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+// Route::get('/test', function () {
+//     orderEmail(13);
+// });
 
 // Frontend
 Route::get('/', [FrontController::class, 'index'])->name('front.home');

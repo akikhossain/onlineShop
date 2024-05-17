@@ -292,6 +292,9 @@ class CartController extends Controller
                 $orderItem->save();
             }
 
+            // send email to user
+            orderEmail($order->id);
+
             session()->flash('success', 'Order placed successfully');
             Cart::destroy();
             session()->forget('code');
