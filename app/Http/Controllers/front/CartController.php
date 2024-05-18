@@ -293,7 +293,7 @@ class CartController extends Controller
             }
 
             // send email to user
-            orderEmail($order->id);
+            orderEmail($order->id, 'customer');
 
             session()->flash('success', 'Order placed successfully');
             Cart::destroy();

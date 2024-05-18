@@ -9,9 +9,13 @@
 </head>
 
 <body style="font-family: Arial, Helvetica, sans-serif;font-size: 16px;">
+    @if ($mailData['userType'] == 'customer')
     <h1>Thanks for your order</h1>
     <h2>Your Order ID is: #{{ $mailData['order']->id }}</h2>
-
+    @else
+    <h1>New Order Received</h1>
+    <h2>Order ID is: #{{ $mailData['order']->id }}</h2>
+    @endif
     <div class="col-sm-4 invoice-col">
         <h2>Shipping Address</h2>
         <address>
