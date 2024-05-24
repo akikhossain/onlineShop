@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -100,16 +101,51 @@ class AuthController extends Controller
     public function orders()
     {
         $user = Auth::user();
-        $orders = Order::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $orders = Order::where('user_id', $user->id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
         return view('Front.account.orders', compact('orders'));
     }
 
     public function orderDetail($id)
     {
         $user = Auth::user();
-        $order = Order::where('user_id', $user->id)->where('id', $id)->first();
-        $orderItems = OrderItem::where('order_id', $order->id)->get();
-        $orderItemsCount = OrderItem::where('order_id', $order->id)->count();
+        $order = Order::where('user_id', $user->id)
+            ->where('id', $id)
+            ->first();
+        $orderItems = OrderItem::where('order_id', $order->id)
+            ->get();
+        $orderItemsCount = OrderItem::where('order_id', $order->id)
+            ->count();
         return view('Front.account.orderDetail', compact('order', 'orderItems', 'orderItemsCount'));
+    }
+
+    public function wishlist()
+    {
+        $wishlists = Wishlist::where('user_id', Auth::user()->id)
+            ->with('product')
+            ->get();
+        return view('Front.account.wishlist', compact('wishlists'));
+    }
+
+    public function removeWishlist()
+    {
+        $wishlist = Wishlist::where('user_id', Auth::user()->id)
+            ->where('product_id', request()->id)
+            ->first();
+
+        if ($wishlist == null) {
+            session()->flash('error', 'Product not found in wishlist');
+            return response()->json([
+                'status' => false,
+                'message' => 'Product not found in wishlist'
+            ]);
+        }
+        $wishlist->delete();
+        session()->flash('success', 'Product removed from wishlist');
+        return response()->json([
+            'status' => true,
+            'message' => 'Product removed from wishlist'
+        ]);
     }
 }
