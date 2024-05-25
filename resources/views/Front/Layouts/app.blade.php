@@ -76,13 +76,13 @@
                         <span class="text-dark">Login/Register</span>
                     </a>
                     @endif
-                    <form action="">
+                    <form action="{{ route('front.shop') }}">
                         <div class="input-group">
-                            <input type="text" placeholder="Search For Products" class="form-control"
-                                aria-label="Amount (to the nearest dollar)">
-                            <span class="input-group-text">
+                            <input value="{{ Request::get('search') }}" id="search" type="text"
+                                placeholder="Search For Products" name="search" class="form-control">
+                            <button type="submit" class="input-group-text">
                                 <i class="fa fa-search"></i>
-                            </span>
+                            </button>
                         </div>
                     </form>
                 </div>
