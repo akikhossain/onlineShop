@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\Admin\ShippingController;
@@ -165,6 +166,13 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.delete');
 
+        // Pages Routes
+        Route::get('/pages', [PageController::class, 'index'])->name('pages.list');
+        Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
+        Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
+        Route::get('/pages/{id}', [PageController::class, 'edit'])->name('pages.edit');
+        Route::put('/pages/{id}', [PageController::class, 'update'])->name('pages.update');
+        Route::delete('/pages/{id}', [PageController::class, 'destroy'])->name('pages.delete');
 
         // temp-image
         Route::post('/upload-temp-image', [TempImagesController::class, 'create'])->name('temp-images.create');
