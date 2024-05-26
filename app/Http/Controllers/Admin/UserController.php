@@ -56,4 +56,72 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function edit(Request $request, $id)
+    {
+        $user = User::find($id);
+        if ($user == null) {
+            session()->flash('error', 'User not found');
+            return redirect()->route('users.list');
+        }
+        return view('Admin.user.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        if ($user == null) {
+            session()->flash('error', 'User not found');
+            return response()->json([
+                'status' => true,
+                'message' => 'User updated successfully',
+            ]);
+        }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id . ',id',
+            'status' => 'required',
+            'phone' => 'required',
+        ]);
+        if ($validator->passes()) {
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->status = $request->status;
+            $user->phone = $request->phone;
+            if ($request->password != '') {
+                $user->password = Hash::make($request->password);
+            }
+            $user->save();
+
+            session()->flash('success', 'User updated successfully');
+            return response()->json([
+                'status' => true,
+                'message' => 'User updated successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors(),
+            ]);
+        }
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $user = User::find($id);
+        if ($user == null) {
+            session()->flash('error', 'User not found');
+            return response()->json([
+                'status' => true,
+                'message' => 'User not found',
+            ]);
+        }
+        $user->delete();
+        session()->flash('success', 'User deleted successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'User deleted successfully',
+        ]);
+    }
 }
