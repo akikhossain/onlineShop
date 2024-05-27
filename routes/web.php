@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
+use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
@@ -177,6 +178,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/pages/{id}', [PageController::class, 'edit'])->name('pages.edit');
         Route::put('/pages/{id}', [PageController::class, 'update'])->name('pages.update');
         Route::delete('/pages/{id}', [PageController::class, 'destroy'])->name('pages.delete');
+
+        // Setting Routes
+        Route::get('/change-password', [SettingController::class, 'showChangePassword'])->name('admin.showChangePassword');
+        Route::post('/process-change-password', [SettingController::class, 'changePassword'])->name('admin.changePassword');
 
         // temp-image
         Route::post('/upload-temp-image', [TempImagesController::class, 'create'])->name('temp-images.create');
