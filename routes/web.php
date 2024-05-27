@@ -76,6 +76,8 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/order-detail/{orderId}', [AuthController::class, 'orderDetail'])->name('account.orderDetail');
         Route::get('/wishlist', [AuthController::class, 'wishlist'])->name('account.wishlist');
         Route::post('/remove-wishlist', [AuthController::class, 'removeWishlist'])->name('account.removeWishlist');
+        Route::get('/change-password', [AuthController::class, 'showChangePassword'])->name('account.showChangePassword');
+        Route::post('/process-change-password', [AuthController::class, 'changePassword'])->name('account.changePassword');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
     });
 });
