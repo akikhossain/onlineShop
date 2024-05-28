@@ -58,6 +58,11 @@ Route::post('/remove-discount', [CartController::class, 'removeCoupon'])->name('
 Route::post('/add-to-wishlist', [FrontController::class, 'addToWishList'])->name('front.addToWishList');
 Route::get('/page/{slug}', [FrontController::class, 'page'])->name('front.page');
 Route::post('/send-contact-mail', [FrontController::class, 'sentContactMail'])->name('front.sentContactMail');
+Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('front.forgotPassword');
+Route::post('/forgot-password', [AuthController::class, 'processForgotPassword'])->name('front.processForgotPassword');
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('front.resetPassword');
+Route::post('/reset-password', [AuthController::class, 'processResetPassword'])->name('front.processResetPassword');
+
 
 
 
