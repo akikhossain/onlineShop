@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactMail;
 use App\Models\Page;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class FrontController extends Controller
 {
@@ -73,5 +77,38 @@ class FrontController extends Controller
             abort(404);
         }
         return view('Front.page', compact('page'));
+    }
+
+    public function sentContactMail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email',
+            'subject' => 'required',
+
+        ]);
+        if ($validator->passes()) {
+            $mailData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
+                'mail_subject' => 'You have received a new mail from ' . $request->name . ' - ' . $request->subject,
+            ];
+
+            $admin = User::where('id', 2)->first();
+            Mail::to($admin->email)->send(new ContactMail($mailData));
+
+            session()->flash('success', 'Thanks for contacting us. We will get back to you soon.');
+            return response()->json([
+                'status' => true,
+                'message' => 'Thanks for contacting us. We will get back to you soon.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
     }
 }

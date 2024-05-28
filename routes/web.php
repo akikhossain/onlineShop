@@ -57,6 +57,8 @@ Route::post('/apply-discount', [CartController::class, 'applyDiscount'])->name('
 Route::post('/remove-discount', [CartController::class, 'removeCoupon'])->name('front.removeCoupon');
 Route::post('/add-to-wishlist', [FrontController::class, 'addToWishList'])->name('front.addToWishList');
 Route::get('/page/{slug}', [FrontController::class, 'page'])->name('front.page');
+Route::post('/send-contact-mail', [FrontController::class, 'sentContactMail'])->name('front.sentContactMail');
+
 
 
 

@@ -112,7 +112,5 @@
         });
     });
 });
-
-
 </script>
 @endsection
