@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductRating;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -96,5 +98,46 @@ class ShopController extends Controller
         }
         // return redirect()->route('shop');
         return view('Front.product', compact('product', 'relatedProducts'));
+    }
+
+    public function saveRating($id, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:5',
+            'email' => 'required|email',
+            'comment' => 'required|min:10',
+            'rating' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $count = ProductRating::where('email', $request->email)->count();
+        if ($count > 0) {
+            session()->flash('error', 'You have already submitted a review');
+            return response()->json([
+                'status' => true,
+                'message' => 'You have already submitted a review'
+            ]);
+        }
+
+        $productRating = new ProductRating();
+        $productRating->product_id = $id;
+        $productRating->username = $request->name;
+        $productRating->email = $request->email;
+        $productRating->comment = $request->comment;
+        $productRating->rating = $request->rating;
+        $productRating->status = 0;
+        $productRating->save();
+
+        session()->flash('success', 'Your review has been submitted successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Your review has been submitted successfully'
+        ]);
     }
 }
