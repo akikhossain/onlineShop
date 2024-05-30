@@ -140,6 +140,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
         Route::get('/get-products', [ProductController::class, 'getProducts'])->name('products.getProducts');
+        Route::get('/product-ratings', [ProductController::class, 'productRating'])->name('products.productRating');
+        Route::get('/change-rating', [ProductController::class, 'changeRatingStatus'])->name('products.changeRatingStatus');
+
 
         // product-sub-category
         Route::get('/product-subCategories', [ProductSubCategoryController::class, 'index'])->name('product-subCategories.list');

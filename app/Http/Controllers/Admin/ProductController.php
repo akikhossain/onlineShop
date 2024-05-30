@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductRating;
 use App\Models\SubCategory;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
@@ -244,6 +245,43 @@ class ProductController extends Controller
         return response()->json([
             'tags' => $tempProduct,
             'status' => true,
+        ]);
+    }
+
+    public function productRating(Request $request)
+    { {
+            $ratings = ProductRating::select('product_ratings.*', 'products.title as productTitle')
+                ->leftJoin('products', 'products.id', '=', 'product_ratings.product_id')
+                ->orderBy('product_ratings.created_at', 'desc');
+
+            if (!empty($request->get('keyword'))) {
+                $ratings =  $ratings->orWhere('products.title', 'like', '%' . $request->get('keyword') . '%');
+                $ratings =  $ratings->orWhere('product_ratings.username', 'like', '%' . $request->get('keyword') . '%');
+            }
+            $ratings = $ratings->paginate(10);
+
+            return view('Admin.products.ratings', compact('ratings'));
+        }
+    }
+
+    public function changeRatingStatus(Request $request)
+    {
+        $rating = ProductRating::find($request->id);
+        if (empty($rating)) {
+            session()->flash('error', 'Rating not found');
+            return response()->json([
+                'status' => false,
+                'notFound' => true,
+            ]);
+        }
+
+        $rating->status = $request->status;
+        $rating->save();
+
+        session()->flash('success', 'Rating status changed successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Rating status changed successfully'
         ]);
     }
 }
