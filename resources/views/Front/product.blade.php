@@ -60,13 +60,27 @@
                     <h1>{{ $product->title }}</h1>
                     <div class="d-flex mb-3">
                         <div class="text-primary mr-2">
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star-half-alt"></small>
-                            <small class="far fa-star"></small>
+                            <div class="star-rating product mt-2">
+                                <div class="back-stars">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+
+                                    <div class="front-stars" style="width: {{ $avgRatingPer }}%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <small class="pt-1">(99 Reviews)</small>
+                        <small class="pt-2 pl-1">({{ ($product->product_ratings_count > 1) ?
+                            $product->product_ratings_count . ' Reviews' :
+                            $product->product_ratings_count . ' Review' }})</small>
                     </div>
 
                     <h2 class="price ">${{ $product->price }}</h2>
@@ -170,8 +184,8 @@
                             <div class="col-md-12 mt-5">
                                 <div class="overall-rating mb-3">
                                     <div class="d-flex">
-                                        <h1 class="h3 pe-3">4.0</h1>
-                                        <div class="star-rating mt-2" title="70%">
+                                        <h1 class="h3 pe-3">{{ $rating }}</h1>
+                                        <div class="star-rating mt-2">
                                             <div class="back-stars">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -179,7 +193,7 @@
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
 
-                                                <div class="front-stars" style="width: 70%">
+                                                <div class="front-stars" style="width: {{ $avgRatingPer }}%">
                                                     <i class="fa fa-star" aria-hidden="true"></i>
                                                     <i class="fa fa-star" aria-hidden="true"></i>
                                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -188,87 +202,54 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="pt-2 ps-2">(03 Reviews)</div>
-                                    </div>
-
-                                </div>
-                                <div class="rating-group mb-4">
-                                    <span> <strong>Mohit Singh </strong></span>
-                                    <div class="star-rating mt-2" title="70%">
-                                        <div class="back-stars">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-
-                                            <div class="front-stars" style="width: 70%">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="my-3">
-                                        <p>I went with the blue model for my new apartment and an very pleased with the
-                                            purchase. I'm definitely someone not used to paying this much for furniture,
-                                            and I am also anxious about buying online, but I am very happy with the
-                                            quality of this couch. For me, it is the perfect mix of cushy firmness, and
-                                            it arrived defect free. It really is well made and hopefully will be my main
-                                            couch for a long time. I paid for the extra delivery & box removal, and had
-                                            an excellent experience as well. I do tend move my own furniture, but with
-                                            an online purchase this expensive, that helped relieved my anxiety about
-                                            having a item this big open up in my space without issues. If you need a
-                                            functional sectional couch and like the feel of leather, this really is a
-                                            great choice.
-
-                                        </p>
+                                        <div class="pt-2 ps-2">({{ ($product->product_ratings_count > 1) ?
+                                            $product->product_ratings_count . ' Reviews' :
+                                            $product->product_ratings_count . ' Review' }})</div>
                                     </div>
                                 </div>
 
-                                <div class="rating-group mb-4">
-                                    <span class="author"><strong>Mohit Singh </strong></span>
-                                    <div class="star-rating mt-2">
-                                        <div class="back-stars">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
 
-                                            <div class="front-stars" style="width: 100%">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            </div>
+                            @if ($product->productRatings->isNotEmpty())
+                            @foreach ($product->productRatings as $rating)
+                            @php
+                            $ratingPer = ($rating->rating * 100)/5;
+                            @endphp
+                            <div class="rating-group mb-4">
+                                <span class="author"><strong>{{ $rating->username }}</strong></span>
+                                <div class="star-rating mt-2">
+                                    <div class="back-stars">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <div class="front-stars" style="width: {{ $ratingPer }}%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
                                         </div>
                                     </div>
-                                    <div class="my-3">
-                                        <p>I went with the blue model for my new apartment and an very pleased with the
-                                            purchase. I'm definitely someone not used to paying this much for furniture,
-                                            and I am also anxious about buying online, but I am very happy with the
-                                            quality of this couch. For me, it is the perfect mix of cushy firmness, and
-                                            it arrived defect free. It really is well made and hopefully will be my main
-                                            couch for a long time. I paid for the extra delivery & box removal, and had
-                                            an excellent experience as well. I do tend move my own furniture, but with
-                                            an online purchase this expensive, that helped relieved my anxiety about
-                                            having a item this big open up in my space without issues. If you need a
-                                            functional sectional couch and like the feel of leather, this really is a
-                                            great choice.
-
-                                        </p>
-                                    </div>
+                                </div>
+                                <div class="my-3">
+                                    <p>{{ $rating->comment }}</p>
                                 </div>
                             </div>
+                            @endforeach
+                            @else
+                            <div class="my-3">
+                                <p>No reviews found for this product.</p>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
